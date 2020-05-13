@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'ruby-kafka'
+require 'ruby-progressbar'
 require_relative 'config'
 
 class RubykafkaSetup
@@ -10,7 +11,9 @@ class RubykafkaSetup
   end
 
   def publish(topic, iterations)
+    progress_bar = ProgressBar.create(format: "\e[0;34m%t: |%B|\e[0m", title: 'Messages Published:', total: iterations)
     iterations.times do |i|
+      progress_bar.increment
       @producer.produce("RUBY_KAFKA_#{i}", topic: topic)
       @producer.deliver_messages
     rescue Kafka::DeliveryFailed => e
