@@ -1,0 +1,38 @@
+#!/usr/bin/env ruby
+
+# frozen_string_literal: true
+
+require_relative 'config'
+require_relative 'rdkafka_setup'
+require_relative 'rubykafka_setup'
+require_relative 'waterdrop_setup'
+
+def run_publisher
+  start_time = Time.now
+  yield
+  end_time = Time.now
+  (end_time - start_time) * 1000.0
+end
+
+iterations = ITERATION_COUNT
+
+puts 'Starting benchmarking. Press Ctrl-C to stop'
+puts 'Starting benchmark for Waterdrop'
+waterdrop_duration = run_publisher do
+  waterdrop_runner = WaterDropSetup.new
+  waterdrop_runner.publish(KAFKA_TOPIC, ITERATION_COUNT)
+end
+puts "Waterdrop took #{waterdrop_duration} seconds to publish #{iterations} records...\n"
+
+puts 'Starting benchmark for RdKafka'
+rdkafka_duration = run_publisher do
+  rdkafka_runner = RdkafkaSetup.new
+  rdkafka_runner.publish(KAFKA_TOPIC, ITERATION_COUNT)
+end
+puts "RDKafka took #{rdkafka_duration} milliseconds to publish #{iterations} records...\n"
+
+puts 'Starting benchmark for RubyKafka'
+rubykafka_duration = run_publisher do
+  RubykafkaSetup.new.publish(KAFKA_TOPIC, ITERATION_COUNT)
+end
+puts "RubyKafka took #{rubykafka_duration} milliseconds to publish #{iterations} records...\n"
