@@ -2,6 +2,7 @@
 
 require 'waterdrop'
 require_relative 'config'
+require_relative 'pb_setup'
 
 class WaterDropSetup
   def initialize
@@ -12,7 +13,11 @@ class WaterDropSetup
   end
 
   def publish(topic, iterations)
+    pbar = ProgressBarSetup.new
+    steps = ProgressBarSetup.steps(iterations)
+
     iterations.times do |i|
+      pbar.increment if steps.include?(i)
       WaterDrop::SyncProducer.call("WATERDROP_#{i}", topic: topic)
     end
   end

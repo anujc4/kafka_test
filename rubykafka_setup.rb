@@ -2,6 +2,7 @@
 
 require 'ruby-kafka'
 require_relative 'config'
+require_relative 'pb_setup'
 
 class RubykafkaSetup
   def initialize
@@ -10,7 +11,11 @@ class RubykafkaSetup
   end
 
   def publish(topic, iterations)
+    pbar = ProgressBarSetup.new
+    steps = ProgressBarSetup.steps(iterations)
+
     iterations.times do |i|
+      pbar.increment if steps.include?(i)
       @producer.produce("RUBY_KAFKA_#{i}", topic: topic)
       @producer.deliver_messages
     rescue Kafka::DeliveryFailed => e
