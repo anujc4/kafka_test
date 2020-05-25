@@ -1,6 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    coderay (1.1.2)
     concurrent-ruby (1.1.6)
     delivery_boy (1.0.1)
       king_konf (~> 0.3)
@@ -31,7 +32,7 @@ GEM
       dry-core (~> 0.4)
       dry-equalizer (~> 0.2)
       dry-events (~> 0.2)
-    dry-schema (1.5.0)
+    dry-schema (1.5.1)
       concurrent-ruby (~> 1.0)
       dry-configurable (~> 0.8, >= 0.8.3)
       dry-core (~> 0.4)
@@ -55,7 +56,11 @@ GEM
       dry-schema (~> 1.5)
     ffi (1.12.2)
     king_konf (0.3.7)
+    method_source (1.0.0)
     mini_portile2 (2.5.0)
+    pry (0.13.1)
+      coderay (~> 1.1)
+      method_source (~> 1.0)
     rake (12.3.3)
     rdkafka (0.7.0)
       ffi (~> 1.9)
@@ -77,10 +82,11 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  rdkafka (~> 0.7.0)
-  ruby-kafka (~> 1.0)
+  pry (~> 0.13.1)
+  rdkafka
+  ruby-kafka
   ruby-progressbar (~> 1.10)
-  waterdrop (~> 1.3)
+  waterdrop
 
 BUNDLED WITH
    2.1.4

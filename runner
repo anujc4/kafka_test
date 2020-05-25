@@ -31,8 +31,14 @@ rdkafka_duration = run_publisher do
 end
 puts "RDKafka took #{rdkafka_duration} milliseconds to publish #{iterations} records...\n"
 
-puts 'Starting benchmark for RubyKafka'
+puts 'Starting benchmark for RubyKafka Sync Producer'
 rubykafka_duration = run_publisher do
   RubykafkaSetup.new.publish(KAFKA_TOPIC, ITERATION_COUNT)
 end
-puts "RubyKafka took #{rubykafka_duration} milliseconds to publish #{iterations} records...\n"
+puts "RubyKafka Producer API took #{rubykafka_duration} milliseconds to publish #{iterations} records...\n"
+
+puts 'Starting benchmark for RubyKafka Basic Producer'
+rubykafka_duration = run_publisher do
+  RubykafkaSetup.new.publish_low_thp(KAFKA_TOPIC, ITERATION_COUNT)
+end
+puts "RubyKafka Client took #{rubykafka_duration} milliseconds to publish #{iterations} records...\n"
